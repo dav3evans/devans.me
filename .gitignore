@@ -7,3 +7,7 @@ node_modules
 
 # Optional npm cache directory
 .npm
+
+# Ghost config file. No passwords in here thank you!
+
+config.js
