@@ -54,7 +54,7 @@ export async function getStaticProps(context) {
   }
 }
 
-export default function Post({post}) {
+const Post = ({post}) => {
   const { title = 'Missing title', name = 'Missing name', categories, authorImage, body = [] } = post
   console.log(categories);
   return (
@@ -84,3 +84,5 @@ export default function Post({post}) {
     </article>
   )
 }
+
+export default Post;
