@@ -1,0 +1,1 @@
+{"c":["pages/post/[slug]","webpack"],"r":["pages/about"],"m":["./node_modules/groq/lib/groq.js","./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2FUsers%2Fdevans%2FSites%2Fdevans.me%2Fweb%2Fpages%2Fabout.js&page=%2Fabout!","./pages/about.js"]}
