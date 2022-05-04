@@ -1,13 +1,16 @@
+import groq from 'groq';
 import client from '../../client'
+import imageUrlBuilder from '@sanity/image-url'
 
-const Post = ({post}) => {
-  const { title = 'Missing title', name = 'Missing name' } = post
-  return (
-    <article>
-      <h1>{title}</h1>
-      <span>By {name}</span>
-    </article>
-  )
+const query = groq`*[_type == "post" && slug.current == $slug][0]{
+  title,
+  "name": author->name,
+  "authorImage": author->image,
+  "categories": categories[]->title
+}`
+
+function urlFor (source) {
+  return imageUrlBuilder(client).image(source)
 }
 
 export async function getStaticPaths() {
@@ -22,14 +25,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  // It's important to default the slug so that it doesn't return "undefined"
-
-  // {title, "name": author->name} this is a GROQ projection
   
   const { slug = "" } = context.params
-  const post = await client.fetch(`
-    *[_type == "post" && slug.current == $slug][0]{title, "name": author->name}
-  `, { slug })
+  const post = await client.fetch(query, { slug })
   return {
     props: {
       post
@@ -37,4 +35,28 @@ export async function getStaticProps(context) {
   }
 }
 
-export default Post
+export default function Post({post}) {
+  const { title = 'Missing title', name = 'Missing name', categories, authorImage } = post
+  console.log(categories);
+  return (
+    <article>
+      <h1>{title}</h1>
+      <span>By {name}</span>
+      {categories && (
+        <ul>
+          Posted in
+          {categories.map(category => <li key={category}>{category}</li>)}
+        </ul>
+      )}
+      {authorImage && (
+        <div>
+          <img
+            src={urlFor(authorImage)
+              .width(50)
+              .url()}
+          />
+        </div>
+      )}
+    </article>
+  )
+}
