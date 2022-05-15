@@ -60,7 +60,7 @@ export async function getStaticProps(context) {
 }
 
 const Post = ({post}) => {
-  const { title = 'Missing title', name = 'Missing name', categories, authorImage, body = [] } = post
+  const { title = 'Missing title', name = 'Missing name', categories, authorImage, body = [] } = post = {};
   console.log(categories);
   return (
     <article>
