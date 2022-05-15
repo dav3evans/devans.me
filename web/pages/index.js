@@ -6,6 +6,7 @@ const Index = ({posts}) => {
     return (
       <div>
         <h1>Welcome to a blog!!</h1>
+        <h2>Stuff to go here...</h2>
         {posts.length > 0 && posts.map(
           ({ _id, title = '', slug = '', publishedAt = '' }) =>
             slug && (
