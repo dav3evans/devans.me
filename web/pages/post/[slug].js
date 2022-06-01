@@ -3,6 +3,8 @@ import client from '../../client'
 import imageUrlBuilder from '@sanity/image-url'
 import {PortableText} from '@portabletext/react'
 
+import CodeComponent from '../../src/components/CodeComponent';
+
 const query = groq`*[_type == "post" && slug.current == $slug][0]{
   title,
   "name": author->name,
@@ -29,11 +31,7 @@ const ptComponents = {
         />
       )
     },
-    code: ({ value })  => (
-      <pre data-language={value.language}>
-        <code>{value.code}</code>
-      </pre>
-    )
+    code: CodeComponent
   }
 }
 
