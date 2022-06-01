@@ -29,11 +29,11 @@ const ptComponents = {
         />
       )
     },
-    code: ({ value }) => {
-      if (value) {
-        console.log('VALUE', value);
-      }
-    }
+    code: ({ value })  => (
+      <pre data-language={value.language}>
+        <code>{value.code}</code>
+      </pre>
+    )
   }
 }
 
