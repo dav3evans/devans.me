@@ -10,13 +10,15 @@ const query = groq`*[_type == "post" && slug.current == $slug][0]{
   "name": author->name,
   "authorImage": author->image,
   "categories": categories[]->title,
-  body
+  body,
+  mainImage
 }`
 
 function urlFor (source) {
   return imageUrlBuilder(client).image(source)
 }
 
+// This is the stuff that goes inside the post.
 const ptComponents = {
   types: {
     image: ({ value }) => {
@@ -39,7 +41,7 @@ export async function getStaticPaths() {
   const paths = await client.fetch(
     `*[_type == "post" && defined(slug.current)][].slug.current`
   )
-
+  console.log('paths', paths);
   return {
     paths: paths.map((slug) => ({params: {slug}})),
     fallback: true,
@@ -58,7 +60,12 @@ export async function getStaticProps(context) {
 }
 
 const Post = ({ post }) => {
-  const { title = 'Missing title', name = 'Missing name', categories, authorImage, body = [] } = post || {};
+  const { title = 'Missing title', name = 'Missing name', mainImage, categories, authorImage, body = [] } = post || {};
+
+  const myImage = urlFor(mainImage).width(320).height(240).fit('max').auto('format');
+
+  console.log('myImage', myImage);
+
   return (
     <article>
       <h1>{title}</h1>
@@ -77,6 +84,19 @@ const Post = ({ post }) => {
               .url()}
               alt={`${name}'s picture`}
           />
+        </div>
+      )}
+            {mainImage && (
+        <div>
+          <p>Default implementation</p>
+          <img
+            src={urlFor(mainImage)
+              .width(50)
+              .url()}
+              alt={`${name}'s picture`}
+          />
+          <p>Second idea</p>
+        <img src={myImage} alt="" />
         </div>
       )}
             <PortableText
